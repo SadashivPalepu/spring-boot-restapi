@@ -1,5 +1,5 @@
 # Use official OpenJDK 17 image
-FROM openjdk:17-alpine
+FROM eclipse-temurin:17-alpine
 
 # Argument for jar file location set by build
 ARG JAR_FILE=target/*.jar
