@@ -1,11 +1,12 @@
-# Use official OpenJDK 17 image
+# Builder stage
+FROM maven:3.8.4-openjdk-17 AS builder
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+# Runtime stage
 FROM eclipse-temurin:17-alpine
-
-# Argument for jar file location set by build
 ARG JAR_FILE=target/*.jar
-
-# Copy the built jar file into the container named app.jar
-COPY ${JAR_FILE} app.jar
-
-# Run the jar file
+COPY --from=builder /app/target/*.jar app.jar
 ENTRYPOINT ["java", "-jar", "/app.jar"]
